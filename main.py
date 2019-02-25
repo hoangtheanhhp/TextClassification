@@ -100,7 +100,8 @@ def computeTFIDF(TF_scores, IDF_scores):
 			TFIDF_scores.append(temp)
 	return TFIDF_scores
 
-X, y = get_data(r"/home/anh/PycharmProjects/sub_train")
+X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
+X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
 # doc_info = count_words(documents)
 # freq_dict_list = create_freq_dict(documents)
 # TF_scores = computeTF(doc_info, freq_dict_list)
@@ -110,10 +111,8 @@ X, y = get_data(r"/home/anh/PycharmProjects/sub_train")
 
 from sklearn.feature_extraction.text import TfidfVectorizer  
 tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7)  
-X = tfidfconverter.fit_transform(X).toarray()
-X_test, y_test = get_data(r"")
-from sklearn.model_selection import train_test_split  
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=0) 
+X_train = tfidfconverter.fit_transform(X_train).toarray()
+X_test = tfidfconverter.fit_transform(X_test).toarray()
 
 classifier = LogisticRegression(random_state=0, solver='lbfgs')
 classifier.fit(X_train, y_train)  
@@ -121,7 +120,6 @@ classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_test) 
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
-
-print y_test,y_pred  
+  
 print(classification_report(y_test,y_pred))  
 print(accuracy_score(y_test, y_pred)) 
