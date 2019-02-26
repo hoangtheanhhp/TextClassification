@@ -45,8 +45,10 @@ def get_data(path):
 
 
 # X_train, y_train = get_data(r"/home/anh/PycharmProjects/sub_train")
-X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
-X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
+X, y = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
+
+from sklearn.model_selection import train_test_split  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
 
 tfidfconverter = TfidfVectorizer()
 X_train = tfidfconverter.fit_transform(X_train).toarray()
