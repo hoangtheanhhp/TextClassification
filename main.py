@@ -34,7 +34,7 @@ def get_datasets_localdata(container_path=None, categories=None, load_content=Tr
 def get_data(path):
     doc_data = get_datasets_localdata(path)
     X, y = doc_data.data, doc_data.target
-    sw = stop_words(r"/home/anh/PycharmProjects/stopwords.txt")
+    sw = stop_words(r"stopwords.txt")
     documents = []
     for x in X:
         doc = ViTokenizer.tokenize(x)
@@ -45,14 +45,14 @@ def get_data(path):
 
 
 # X_train, y_train = get_data(r"/home/anh/PycharmProjects/sub_train")
-X_train, y_train = get_data(r"/home/anh/PycharmProjects/train")
-X_test, y_test = get_data(r"/home/anh/PycharmProjects/test")
+X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
+X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
 
-tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7)
+tfidfconverter = TfidfVectorizer()
 X_train = tfidfconverter.fit_transform(X_train).toarray()
 X_test = tfidfconverter.fit_transform(X_test).toarray()
 
-classifier = LogisticRegression( solver='lbfgs')
+classifier = LogisticRegression(solver='lbfgs')
 classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_test)
