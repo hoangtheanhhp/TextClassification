@@ -47,12 +47,11 @@ def get_data(path):
 # X_train, y_train = get_data(r"/home/anh/PycharmProjects/sub_train")
 X, y = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
 
+tfidfconverter = TfidfVectorizer(max_features=1500, min_df=5, max_df=0.7)
+X= tfidfconverter.fit_transform(X).toarray()
+
 from sklearn.model_selection import train_test_split  
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
-
-tfidfconverter = TfidfVectorizer()
-X_train = tfidfconverter.fit_transform(X_train).toarray()
-X_test = tfidfconverter.fit_transform(X_test).toarray()
 
 classifier = LogisticRegression(solver='lbfgs')
 classifier.fit(X_train, y_train)
