@@ -49,12 +49,15 @@ X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/t
 
 X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
 	
-from sklearn.model_selection import train_test_split  
-X_train, X_test, y_train, y_test = train_test_split(X_train+y_test, y_train+y_test, test_size=0.3) 
+X = X_train+X_test
+y = y_train+y_test
 
 tfidfconverter = TfidfVectorizer()
-X_train = tfidfconverter.fit_transform(X_train).toarray()
-X_test = tfidfconverter.fit_transform(X_test).toarray()
+X = tfidfconverter.fit_transform(X).toarray()
+
+from sklearn.model_selection import train_test_split  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3) 
+
 
 classifier = LogisticRegression(solver='lbfgs')
 classifier.fit(X_train, y_train)
