@@ -48,8 +48,7 @@ def get_data(path):
 X, y = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
 
 tfidfconverter = TfidfVectorizer()
-X_train = tfidfconverter.fit_transform(X_train).toarray()
-X_test = tfidfconverter.fit_transform(X_test).toarray()
+X = tfidfconverter.fit_transform(X).toarray()
 
 
 from sklearn.model_selection import train_test_split  
