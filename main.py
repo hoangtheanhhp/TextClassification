@@ -41,6 +41,8 @@ def get_data(path):
     documents = []
     for x in X:
         doc = ViTokenizer.tokenize(x)
+        doc = re.sub(r'^https?:\/\/.*[\r\n]*', '', doc, flags=re.MULTILINE)
+        doc = re.sub(" \d+", " ", doc)
         doc = gensim.utils.simple_preprocess(doc)
         doc = " ".join([word for word in doc if word.encode('utf-8') not in sw])
         documents.append(doc)
@@ -57,7 +59,7 @@ X_test = tfidfconverter.transform(X_test)
 # from sklearn.model_selection import train_test_split  
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
 
-classifier = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial', C=0.5)
+classifier = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial', C=0.9)
 # classifier = LinearSVC()
 classifier.fit(X_train, y_train)
 

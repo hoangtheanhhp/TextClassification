@@ -40,6 +40,8 @@ def get_data(path):
     documents = []
     for x in X:
         doc = ViTokenizer.tokenize(x)
+        doc = re.sub(r'^https?:\/\/.*[\r\n]*', '', doc, flags=re.MULTILINE)
+        doc = re.sub(" \d+", " ", doc)
         doc = gensim.utils.simple_preprocess(doc)
         doc = " ".join([word for word in doc if word.encode('utf-8') not in sw])
         documents.append(doc)
