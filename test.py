@@ -7,7 +7,6 @@ from sklearn.datasets import load_files
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
-
 import gensim
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
@@ -47,36 +46,36 @@ def get_data(path):
     return documents, y
 
 
-X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
-X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
+X, y = get_data(r"/home/anh/PycharmProjects/sub_train")
+
+from sklearn.model_selection import train_test_split  
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
+
 
 tfidfconverter = TfidfVectorizer()
 X_train = tfidfconverter.fit_transform(X_train)
 X_test = tfidfconverter.transform(X_test)
 
-# from sklearn.model_selection import train_test_split  
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
-
-# classifier = LogisticRegression()
 classifier = LinearSVC()
+
 classifier.fit(X_train, y_train)
 
-# save the model to disk
+# # save the model to disk
 filename = 'finalized_model.sav'
-joblib.dump(model, filename)
+joblib.dump(classifier, filename)
  
 # some time later...
  
 # load the model from disk
 loaded_model = joblib.load(filename)
-result = loaded_model.score(X_test, Y_test)
+result = loaded_model.score(X_test, y_test)
 print(result)
 
-y_pred = classifier.predict(X_test)
-from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
+# y_pred = classifier.predict(X_test)
+# from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
-print(classification_report(y_test, y_pred))
-print(accuracy_score(y_test, y_pred))
+# print(classification_report(y_test, y_pred))
+# print(accuracy_score(y_test, y_pred))
 
 
 
