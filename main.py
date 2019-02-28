@@ -44,15 +44,15 @@ def get_data(path):
     return documents, y
 
 
-# X_train, y_train = get_data(r"/home/anh/PycharmProjects/sub_train")
-X, y = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
+X_test, y_test = get_data(r"/home/sontc/dataset/text_classification/dataset1/test")
+X_train, y_train = get_data(r"/home/sontc/dataset/text_classification/dataset1/train")
 
 tfidfconverter = TfidfVectorizer()
-X = tfidfconverter.fit_transform(X).toarray()
+X_train = tfidfconverter.fit_transform(X_train)
+X_test = tfidfconverter.transform(X_test)
 
-
-from sklearn.model_selection import train_test_split  
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
+# from sklearn.model_selection import train_test_split  
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
 
 classifier = LogisticRegression()
 classifier.fit(X_train, y_train)
