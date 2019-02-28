@@ -61,89 +61,8 @@ X_test = tfidfconverter.transform(X_test)
 classifier = LinearSVC()
 classifier.fit(X_train, y_train)
 
-# save the model to disk
-filename = 'finalized_model.sav'
-joblib.dump(model, filename)
- 
-# some time later...
- 
-# load the model from disk
-loaded_model = joblib.load(filename)
-result = loaded_model.score(X_test, Y_test)
-print(result)
-
 y_pred = classifier.predict(X_test)
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
 print(classification_report(y_test, y_pred))
 print(accuracy_score(y_test, y_pred))
-
-
-
-def count_words(docs):
-    id = 0
-    doc_info = []
-    for doc in docs:
-        id += 1
-        temp = {'doc_id': id, 'doc_length': len(doc.split())}
-        doc_info.append(temp)
-    return doc_info
-
-
-def create_freq_dict(docs):
-    i = 0
-    freq_dict_list = []
-    for doc in docs:
-        i += 1
-        freq_dict = {}
-        for word in doc:
-            if word in freq_dict:
-                freq_dict[word] += 1
-            else:
-                freq_dict[word] = 1
-            temp = {'doc_id': i, 'freq_dict': freq_dict}
-        freq_dict_list.append(temp)
-    return freq_dict_list
-
-
-def computeTF(doc_info, freq_dict_list):
-    TF_scores = []
-    for tempDict in freq_dict_list:
-        id = tempDict['doc_id']
-        for key in tempDict['freq_dict']:
-            temp = {'doc_id': id,
-                    'TF_score': tempDict['freq_dict'][key] / float(doc_info[id - 1]['doc_length']),
-                    'key': key}
-            TF_scores.append(temp)
-    return TF_scores
-
-
-def computeIDF(doc_info, freq_dict_list):
-    import math
-    IDF_scores = []
-    for tempDict in freq_dict_list:
-        for key in tempDict['freq_dict'].keys():
-            count = sum([key in temp['freq_dict'] for temp in freq_dict_list])
-            temp = {'doc_id': tempDict['doc_id'], 'IDF_score': math.log(1 + len(doc_info) / float(count)), 'key': key}
-            IDF_scores.append(temp)
-    return IDF_scores
-
-
-def computeTFIDF(TF_scores, IDF_scores):
-    TFIDF_scores = []
-    for j in IDF_scores:
-        for i in TF_scores:
-            if i['key'] == j['key'] and i['doc_id'] == j['doc_id']:
-                temp = {'doc_id': i['doc_id'],
-                        'TFIDF_score': i['TF_score'] * j['IDF_score'],
-                        'key': i['key']
-                        }
-            TFIDF_scores.append(temp)
-    return TFIDF_scores
-
-# doc_info = count_words(documents)
-# freq_dict_list = create_freq_dict(documents)
-# TF_scores = computeTF(doc_info, freq_dict_list)
-# IDF_scores = computeIDF(doc_info, freq_dict_list)
-# TFIDF_scores = computeTFIDF(TF_scores, IDF_scores)
-# print TFIDF_scores
