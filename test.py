@@ -47,7 +47,7 @@ def get_data(path):
         documents.append(doc)
     return documents, y
 
-
+ 
 X, y = get_data(r"/home/anh/PycharmProjects/sub_train")
 
 from sklearn.model_selection import train_test_split  
