@@ -60,7 +60,7 @@ X_test = tfidfconverter.transform(X_test)
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0) 
 
 # classifier = LogisticRegression(random_state=0, solver='lbfgs', multi_class='multinomial', C=0.9)
-classifier = LinearSVC(C=100)
+classifier = SVC(C=2, kernal='sigmoid', gamma='auto')
 classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_test)
